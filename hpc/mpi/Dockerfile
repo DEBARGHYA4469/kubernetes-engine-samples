@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # Import Rocky linux 8 from spack that contains pre-installed spack
-FROM spack/rockylinux8:sha256:c530b10099eeedad9d384ffc7419f355d93289b2e615143256186406ee04e275 AS spack-builder
+FROM spack/rockylinux8:latest AS spack-builder
 
 # Install build packages
 RUN dnf update -y && \
@@ -41,7 +41,8 @@ RUN mkdir /opt/spack-env \
 &&   echo "  concretizer:" \
 &&   echo "    unify: true" \
 &&   echo "  config:" \
-&&   echo "    install_tree: /opt/software" \
+&&   echo "    install_tree:" \
+&&   echo "      root: /opt/software" \
 &&   echo "  view: /opt/view") > /opt/spack-env/spack.yaml
 
 RUN cd /opt/spack-env && spack env activate . && spack install --fail-fast && spack gc -y
